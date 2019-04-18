@@ -1,12 +1,13 @@
 from functions.printers import printTable
-from functions.creators import getDefaultTable
+from functions.creators import getDefaultTable, createTable, insertAtPosition
 from functions.searchers import bfs, dfs, getNextCells, drawReturnPath
 
 # OPTIONS
 SHOW_TABLE = 1
 RESTORE_TABLE = 2
-BFS = 3
-DFS = 4
+CREATE_TABLE = 3
+BFS = 4
+DFS = 5
 
 matrix = getDefaultTable()
 
@@ -15,9 +16,10 @@ print("Challenge 2 |AI UCAB|", end="\n\n")
 userOption = -1
 while userOption:
   print("1.- Show table")
-  print("2.- Restore table")
-  print("3.- BFS")
-  print("4.- DFS")
+  print("2.- Restore default table")
+  print("3.- Create table")
+  print("4.- BFS")
+  print("5.- DFS")
   print("0.- Exit")
 
   userOption = int(input("Select one option: "))
@@ -26,9 +28,29 @@ while userOption:
   if userOption == SHOW_TABLE:
     printTable(matrix)
 
-  # Create table
+  # Restore table
   elif userOption == RESTORE_TABLE:
     matrix = getDefaultTable()
+
+  # Create table
+  elif userOption == CREATE_TABLE:
+    dimension = int(input("Matrix dimension: "))
+    matrix = createTable(dimension)
+    
+    printTable(matrix)
+    if not insertAtPosition(matrix, -2, "Start: "):
+      matrix = getDefaultTable()
+      continue
+
+    printTable(matrix)
+    if not insertAtPosition(matrix, -3, "End: "):
+      matrix = getDefaultTable()
+      continue
+
+    printTable(matrix)
+    while insertAtPosition(matrix, -1, "Block: "):
+      printTable(matrix)
+      print("Press Enter to finish")
   
   # BFS
   elif userOption == BFS:
